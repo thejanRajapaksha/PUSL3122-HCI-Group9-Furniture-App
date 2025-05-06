@@ -1,0 +1,320 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+
+    --radius: 0.5rem;
+
+    /* Custom colors for furniture app */
+    --furniture-primary: 221.2 83.2% 53.3%;
+    --furniture-secondary: 262 83% 58%;
+    --furniture-accent: 340 82% 52%;
+    --furniture-neutral: 220 14% 96%;
+    --furniture-pattern: 210 40% 98%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+
+    /* Custom colors for furniture app - dark mode */
+    --furniture-primary: 217.2 91.2% 59.8%;
+    --furniture-secondary: 262 83% 68%;
+    --furniture-accent: 340 82% 62%;
+    --furniture-neutral: 220 14% 16%;
+    --furniture-pattern: 222.2 47.4% 11.2%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Colorful background pattern */
+    background-image: radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.15) 0%, transparent 20%),
+      radial-gradient(circle at 90% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 20%),
+      radial-gradient(circle at 30% 70%, rgba(59, 130, 246, 0.15) 0%, transparent 20%),
+      radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.15) 0%, transparent 20%),
+      linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(139, 92, 246, 0.05) 50%, rgba(59, 130, 246, 0.05) 100%);
+    background-attachment: fixed;
+    background-size: 100% 100%;
+  }
+}
+
+/* Charming background patterns */
+.bg-pattern-dots {
+  background-color: hsl(var(--furniture-neutral) / 0.7);
+  background-image: radial-gradient(hsl(var(--furniture-pattern) / 0.7) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-pattern-grid {
+  background-color: hsl(var(--furniture-neutral) / 0.7);
+  background-image: linear-gradient(hsl(var(--furniture-pattern) / 0.5) 1px, transparent 1px),
+    linear-gradient(to right, hsl(var(--furniture-pattern) / 0.5) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.bg-pattern-diagonal {
+  background-color: hsl(var(--furniture-neutral) / 0.7);
+  background-image: repeating-linear-gradient(
+    45deg,
+    hsl(var(--furniture-pattern) / 0.5) 0,
+    hsl(var(--furniture-pattern) / 0.5) 1px,
+    transparent 0,
+    transparent 50%
+  );
+  background-size: 20px 20px;
+}
+
+.bg-gradient-soft {
+  background: linear-gradient(135deg, hsl(var(--furniture-neutral) / 0.7) 0%, hsl(var(--furniture-pattern) / 0.7) 100%);
+}
+
+.bg-gradient-colorful {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--furniture-neutral) / 0.7) 0%,
+    hsl(var(--furniture-primary) / 0.1) 50%,
+    hsl(var(--furniture-secondary) / 0.1) 100%
+  );
+}
+
+/* Decorative elements */
+.decoration-dot {
+  position: absolute;
+  border-radius: 50%;
+  background-color: hsl(var(--furniture-primary) / 0.2);
+  filter: blur(40px);
+  z-index: -1;
+}
+
+.decoration-dot-1 {
+  width: 200px;
+  height: 200px;
+  top: 10%;
+  left: 5%;
+  background-color: hsl(var(--furniture-primary) / 0.15);
+}
+
+.decoration-dot-2 {
+  width: 300px;
+  height: 300px;
+  bottom: 10%;
+  right: 5%;
+  background-color: hsl(var(--furniture-secondary) / 0.15);
+}
+
+.decoration-dot-3 {
+  width: 150px;
+  height: 150px;
+  top: 40%;
+  right: 20%;
+  background-color: hsl(var(--furniture-accent) / 0.15);
+}
+
+/* Card hover effects */
+.card-hover-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+/* Animated gradient border */
+.gradient-border {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    45deg,
+    hsl(var(--furniture-primary)),
+    hsl(var(--furniture-secondary)),
+    hsl(var(--furniture-accent)),
+    hsl(var(--furniture-primary))
+  );
+  z-index: -1;
+  border-radius: calc(var(--radius) + 2px);
+  background-size: 400% 400%;
+  animation: gradient-animation 15s ease infinite;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Background overlay for better readability */
+.bg-overlay {
+  position: relative;
+}
+
+.bg-overlay::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: -1;
+}
+
+/* Geometric pattern background */
+.geometric-bg {
+  position: relative;
+}
+
+.geometric-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(
+      30deg,
+      rgba(79, 70, 229, 0.1) 12%,
+      transparent 12.5%,
+      transparent 87%,
+      rgba(79, 70, 229, 0.1) 87.5%,
+      rgba(79, 70, 229, 0.1)
+    ),
+    linear-gradient(
+      150deg,
+      rgba(79, 70, 229, 0.1) 12%,
+      transparent 12.5%,
+      transparent 87%,
+      rgba(79, 70, 229, 0.1) 87.5%,
+      rgba(79, 70, 229, 0.1)
+    ),
+    linear-gradient(
+      30deg,
+      rgba(79, 70, 229, 0.1) 12%,
+      transparent 12.5%,
+      transparent 87%,
+      rgba(79, 70, 229, 0.1) 87.5%,
+      rgba(79, 70, 229, 0.1)
+    ),
+    linear-gradient(
+      150deg,
+      rgba(79, 70, 229, 0.1) 12%,
+      transparent 12.5%,
+      transparent 87%,
+      rgba(79, 70, 229, 0.1) 87.5%,
+      rgba(79, 70, 229, 0.1)
+    ),
+    linear-gradient(
+      60deg,
+      rgba(139, 92, 246, 0.1) 25%,
+      transparent 25.5%,
+      transparent 75%,
+      rgba(139, 92, 246, 0.1) 75%,
+      rgba(139, 92, 246, 0.1)
+    ),
+    linear-gradient(
+      60deg,
+      rgba(139, 92, 246, 0.1) 25%,
+      transparent 25.5%,
+      transparent 75%,
+      rgba(139, 92, 246, 0.1) 75%,
+      rgba(139, 92, 246, 0.1)
+    );
+  background-size: 40px 70px;
+  background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
+  z-index: -1;
+}
+
+/* Colorful dots pattern */
+.dots-pattern {
+  position: relative;
+}
+
+.dots-pattern::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(rgba(79, 70, 229, 0.3) 2px, transparent 2px),
+    radial-gradient(rgba(139, 92, 246, 0.3) 2px, transparent 2px),
+    radial-gradient(rgba(59, 130, 246, 0.3) 2px, transparent 2px);
+  background-size: 40px 40px, 60px 60px, 70px 70px;
+  background-position: 0 0, 20px 20px, 35px 35px;
+  z-index: -1;
+}

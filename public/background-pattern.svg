@@ -1,0 +1,100 @@
+<svg width="1440" height="1024" viewBox="0 0 1440 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g opacity="0.15">
+    <!-- Background -->
+    <rect width="1440" height="1024" fill="#F8FAFC"/>
+    
+    <!-- Geometric Patterns -->
+    <!-- Circles -->
+    <circle cx="200" cy="150" r="80" fill="#4F46E5" opacity="0.2"/>
+    <circle cx="1200" cy="300" r="120" fill="#8B5CF6" opacity="0.15"/>
+    <circle cx="400" cy="700" r="100" fill="#3B82F6" opacity="0.1"/>
+    <circle cx="1000" cy="800" r="90" fill="#A855F7" opacity="0.2"/>
+    
+    <!-- Squares -->
+    <rect x="600" y="200" width="100" height="100" fill="#4F46E5" opacity="0.1"/>
+    <rect x="300" y="400" width="80" height="80" fill="#8B5CF6" opacity="0.15"/>
+    <rect x="900" y="500" width="120" height="120" fill="#3B82F6" opacity="0.1"/>
+    <rect x="700" y="700" width="70" height="70" fill="#A855F7" opacity="0.2"/>
+    
+    <!-- Triangles -->
+    <path d="M150 500 L200 600 L100 600 Z" fill="#4F46E5" opacity="0.15"/>
+    <path d="M1100 200 L1200 350 L1000 350 Z" fill="#8B5CF6" opacity="0.1"/>
+    <path d="M500 900 L600 800 L700 900 Z" fill="#3B82F6" opacity="0.2"/>
+    <path d="M1300 600 L1350 700 L1250 700 Z" fill="#A855F7" opacity="0.15"/>
+    
+    <!-- Lines -->
+    <line x1="0" y1="100" x2="1440" y2="100" stroke="#4F46E5" stroke-width="2" opacity="0.05"/>
+    <line x1="0" y1="300" x2="1440" y2="300" stroke="#8B5CF6" stroke-width="2" opacity="0.05"/>
+    <line x1="0" y1="600" x2="1440" y2="600" stroke="#3B82F6" stroke-width="2" opacity="0.05"/>
+    <line x1="0" y1="900" x2="1440" y2="900" stroke="#A855F7" stroke-width="2" opacity="0.05"/>
+    
+    <line x1="200" y1="0" x2="200" y2="1024" stroke="#4F46E5" stroke-width="2" opacity="0.05"/>
+    <line x1="600" y1="0" x2="600" y2="1024" stroke="#8B5CF6" stroke-width="2" opacity="0.05"/>
+    <line x1="1000" y1="0" x2="1000" y2="1024" stroke="#3B82F6" stroke-width="2" opacity="0.05"/>
+    <line x1="1400" y1="0" x2="1400" y2="1024" stroke="#A855F7" stroke-width="2" opacity="0.05"/>
+    
+    <!-- Dots -->
+    <circle cx="100" cy="100" r="3" fill="#4F46E5" opacity="0.3"/>
+    <circle cx="100" cy="200" r="3" fill="#8B5CF6" opacity="0.3"/>
+    <circle cx="100" cy="300" r="3" fill="#3B82F6" opacity="0.3"/>
+    <circle cx="100" cy="400" r="3" fill="#A855F7" opacity="0.3"/>
+    <circle cx="100" cy="500" r="3" fill="#4F46E5" opacity="0.3"/>
+    <circle cx="100" cy="600" r="3" fill="#8B5CF6" opacity="0.3"/>
+    <circle cx="100" cy="700" r="3" fill="#3B82F6" opacity="0.3"/>
+    <circle cx="100" cy="800" r="3" fill="#A855F7" opacity="0.3"/>
+    <circle cx="100" cy="900" r="3" fill="#4F46E5" opacity="0.3"/>
+    
+    <circle cx="200" cy="100" r="3" fill="#8B5CF6" opacity="0.3"/>
+    <circle cx="200" cy="200" r="3" fill="#3B82F6" opacity="0.3"/>
+    <circle cx="200" cy="300" r="3" fill="#A855F7" opacity="0.3"/>
+    <circle cx="200" cy="400" r="3" fill="#4F46E5" opacity="0.3"/>
+    <circle cx="200" cy="500" r="3" fill="#8B5CF6" opacity="0.3"/>
+    <circle cx="200" cy="600" r="3" fill="#3B82F6" opacity="0.3"/>
+    <circle cx="200" cy="700" r="3" fill="#A855F7" opacity="0.3"/>
+    <circle cx="200" cy="800" r="3" fill="#4F46E5" opacity="0.3"/>
+    <circle cx="200" cy="900" r="3" fill="#8B5CF6" opacity="0.3"/>
+    
+    <!-- Repeat for more columns -->
+    <circle cx="300" cy="100" r="3" fill="#3B82F6" opacity="0.3"/>
+    <circle cx="300" cy="300" r="3" fill="#4F46E5" opacity="0.3"/>
+    <circle cx="300" cy="500" r="3" fill="#A855F7" opacity="0.3"/>
+    <circle cx="300" cy="700" r="3" fill="#8B5CF6" opacity="0.3"/>
+    <circle cx="300" cy="900" r="3" fill="#3B82F6" opacity="0.3"/>
+    
+    <circle cx="400" cy="200" r="3" fill="#A855F7" opacity="0.3"/>
+    <circle cx="400" cy="400" r="3" fill="#8B5CF6" opacity="0.3"/>
+    <circle cx="400" cy="600" r="3" fill="#4F46E5" opacity="0.3"/>
+    <circle cx="400" cy="800" r="3" fill="#3B82F6" opacity="0.3"/>
+    
+    <circle cx="500" cy="100" r="3" fill="#4F46E5" opacity="0.3"/>
+    <circle cx="500" cy="300" r="3" fill="#A855F7" opacity="0.3"/>
+    <circle cx="500" cy="500" r="3" fill="#3B82F6" opacity="0.3"/>
+    <circle cx="500" cy="700" r="3" fill="#8B5CF6" opacity="0.3"/>
+    <circle cx="500" cy="900" r="3" fill="#4F46E5" opacity="0.3"/>
+    
+    <!-- More scattered dots -->
+    <circle cx="700" cy="150" r="3" fill="#4F46E5" opacity="0.3"/>
+    <circle cx="800" cy="250" r="3" fill="#8B5CF6" opacity="0.3"/>
+    <circle cx="900" cy="350" r="3" fill="#3B82F6" opacity="0.3"/>
+    <circle cx="1000" cy="450" r="3" fill="#A855F7" opacity="0.3"/>
+    <circle cx="1100" cy="550" r="3" fill="#4F46E5" opacity="0.3"/>
+    <circle cx="1200" cy="650" r="3" fill="#8B5CF6" opacity="0.3"/>
+    <circle cx="1300" cy="750" r="3" fill="#3B82F6" opacity="0.3"/>
+    <circle cx="1400" cy="850" r="3" fill="#A855F7" opacity="0.3"/>
+    
+    <circle cx="750" cy="100" r="3" fill="#A855F7" opacity="0.3"/>
+    <circle cx="850" cy="200" r="3" fill="#4F46E5" opacity="0.3"/>
+    <circle cx="950" cy="300" r="3" fill="#8B5CF6" opacity="0.3"/>
+    <circle cx="1050" cy="400" r="3" fill="#3B82F6" opacity="0.3"/>
+    <circle cx="1150" cy="500" r="3" fill="#A855F7" opacity="0.3"/>
+    <circle cx="1250" cy="600" r="3" fill="#4F46E5" opacity="0.3"/>
+    <circle cx="1350" cy="700" r="3" fill="#8B5CF6" opacity="0.3"/>
+    
+    <!-- Wavy lines -->
+    <path d="M0 200 Q 100 150, 200 200 Q 300 250, 400 200 Q 500 150, 600 200 Q 700 250, 800 200 Q 900 150, 1000 200 Q 1100 250, 1200 200 Q 1300 150, 1400 200 Q 1500 250, 1600 200" stroke="#4F46E5" stroke-width="2" fill="none" opacity="0.1"/>
+    
+    <path d="M0 400 Q 100 350, 200 400 Q 300 450, 400 400 Q 500 350, 600 400 Q 700 450, 800 400 Q 900 350, 1000 400 Q 1100 450, 1200 400 Q 1300 350, 1400 400 Q 1500 450, 1600 400" stroke="#8B5CF6" stroke-width="2" fill="none" opacity="0.1"/>
+    
+    <path d="M0 800 Q 100 750, 200 800 Q 300 850, 400 800 Q 500 750, 600 800 Q 700 850, 800 800 Q 900 750, 1000 800 Q 1100 850, 1200 800 Q 1300 750, 1400 800 Q 1500 850, 1600 800" stroke="#3B82F6" stroke-width="2" fill="none" opacity="0.1"/>
+  </g>
+</svg>
