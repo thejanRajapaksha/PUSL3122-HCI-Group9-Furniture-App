@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
+import { useRouter, useParams } from "next/navigation"
 import Link from "next/link"
 import { Canvas, useThree, useFrame } from "@react-three/fiber"
 import { OrbitControls, PerspectiveCamera, Environment, Grid, Html } from "@react-three/drei"
@@ -13,6 +14,8 @@ import { Separator } from "@/components/ui/separator"
 import { ArrowLeft, Save, ZoomIn, ZoomOut, Move, Sun, RotateCcw } from "lucide-react"
 import { HexColorPicker } from "react-colorful"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { toast } from "@/components/ui/use-toast"
+import { Toaster } from "@/components/ui/toaster"
 import * as THREE from "three"
 
 // Furniture components
@@ -188,7 +191,7 @@ const DraggableFurniture = ({ children, id, position, onPositionChange, isSelect
       {children}
       {isSelected && view === "3d" && (
         <Html>
-          <div className="bg-primary text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+          <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
             {dragging ? "Dragging..." : "Click and drag to move"}
           </div>
         </Html>
@@ -235,7 +238,7 @@ const TwoDView = ({ roomSize, furniture, selectedFurniture, onSelectFurniture, o
     for (let y = 0; y <= roomSize[2]; y++) {
       ctx.beginPath()
       ctx.moveTo(0, y * scale)
-      ctx.lineTo(canvas.width, canvas.height)
+      ctx.lineTo(canvas.width, y * scale)
       ctx.stroke()
     }
 
@@ -250,7 +253,7 @@ const TwoDView = ({ roomSize, furniture, selectedFurniture, onSelectFurniture, o
 
       // Set color and stroke
       ctx.fillStyle = item.color
-      ctx.strokeStyle = item.id === selectedFurniture ? "#000" : "#666"
+      ctx.strokeStyle = item.id === selectedFurniture ? "#4f46e5" : "#666"
       ctx.lineWidth = item.id === selectedFurniture ? 2 : 1
 
       if (item.type === "chair") {
@@ -381,7 +384,7 @@ const TwoDView = ({ roomSize, furniture, selectedFurniture, onSelectFurniture, o
   }, [roomSize, furniture, selectedFurniture])
 
   return (
-    <div className="w-full h-full flex items-center justify-center bg-gray-100">
+    <div className="w-full h-full flex items-center justify-center">
       <div className="relative border shadow-md bg-white">
         <canvas ref={canvasRef} />
         <div className="absolute top-2 left-2 text-xs text-gray-500">
@@ -392,26 +395,93 @@ const TwoDView = ({ roomSize, furniture, selectedFurniture, onSelectFurniture, o
   )
 }
 
+// Design Editor Component
 export default function DesignEditor() {
+  const router = useRouter()
+  const params = useParams()
+  const designId = params.id
+
   const [view, setView] = useState("3d")
   const [roomSize, setRoomSize] = useState([5, 3, 5])
   const [wallColor, setWallColor] = useState("#f5f5f5")
   const [floorColor, setFloorColor] = useState("#e0e0e0")
   const [selectedFurniture, setSelectedFurniture] = useState(null)
-  const [furniture, setFurniture] = useState([
-    { id: 1, type: "chair", position: [-1, 0, 0], rotation: [0, 0, 0], color: "#8B4513" },
-    { id: 2, type: "table", position: [0, 0, 0], rotation: [0, 0, 0], color: "#A0522D", size: [1.5, 0.05, 1] },
-    { id: 3, type: "chair", position: [1, 0, 0], rotation: [0, Math.PI, 0], color: "#8B4513" },
-  ])
+  const [furniture, setFurniture] = useState([])
   const [designName, setDesignName] = useState("New Room Design")
   const [lightIntensity, setLightIntensity] = useState(1)
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Load design data
+  useEffect(() => {
+    const loadDesign = () => {
+      try {
+        const savedDesigns = localStorage.getItem("furnitureDesigns")
+        if (savedDesigns) {
+          const designs = JSON.parse(savedDesigns)
+          const design = designs.find((d) => d.id === designId)
+
+          if (design) {
+            setDesignName(design.name)
+            setRoomSize(design.data.roomSize || [5, 3, 5])
+            setWallColor(design.data.wallColor || "#f5f5f5")
+            setFloorColor(design.data.floorColor || "#e0e0e0")
+            setFurniture(design.data.furniture || [])
+            setLightIntensity(design.data.lightIntensity || 1)
+          } else {
+            // Design not found, create a new one
+            const newDesign = {
+              id: designId,
+              name: "New Room Design",
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+              thumbnail: "/placeholder.svg?height=100&width=200",
+              data: {
+                roomSize: [5, 3, 5],
+                wallColor: "#f5f5f5",
+                floorColor: "#e0e0e0",
+                furniture: [],
+                lightIntensity: 1,
+              },
+            }
+
+            const updatedDesigns = [...designs, newDesign]
+            localStorage.setItem("furnitureDesigns", JSON.stringify(updatedDesigns))
+          }
+        } else {
+          // No designs exist yet, create a new one
+          const newDesign = {
+            id: designId,
+            name: "New Room Design",
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            thumbnail: "/placeholder.svg?height=100&width=200",
+            data: {
+              roomSize: [5, 3, 5],
+              wallColor: "#f5f5f5",
+              floorColor: "#e0e0e0",
+              furniture: [],
+              lightIntensity: 1,
+            },
+          }
+
+          localStorage.setItem("furnitureDesigns", JSON.stringify([newDesign]))
+        }
+      } catch (error) {
+        console.error("Error loading design:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadDesign()
+  }, [designId])
 
   const handleUpdatePosition = (id, newPosition) => {
     setFurniture(furniture.map((item) => (item.id === id ? { ...item, position: newPosition } : item)))
   }
 
   const handleAddFurniture = (type) => {
-    const newId = Math.max(0, ...furniture.map((f) => f.id)) + 1
+    const newId = Math.max(0, ...furniture.map((f) => f.id || 0), 0) + 1
     let newFurniture
 
     if (type === "chair") {
@@ -443,12 +513,69 @@ export default function DesignEditor() {
   }
 
   const handleSaveDesign = () => {
-    alert(`Design "${designName}" saved successfully!`)
+    try {
+      const savedDesigns = localStorage.getItem("furnitureDesigns")
+      const designs = savedDesigns ? JSON.parse(savedDesigns) : []
+
+      const designData = {
+        roomSize,
+        wallColor,
+        floorColor,
+        furniture,
+        lightIntensity,
+      }
+
+      const existingDesignIndex = designs.findIndex((d) => d.id === designId)
+
+      if (existingDesignIndex >= 0) {
+        // Update existing design
+        designs[existingDesignIndex] = {
+          ...designs[existingDesignIndex],
+          name: designName,
+          updatedAt: new Date().toISOString(),
+          data: designData,
+        }
+      } else {
+        // Create new design
+        designs.push({
+          id: designId,
+          name: designName,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          thumbnail: "/placeholder.svg?height=100&width=200",
+          data: designData,
+        })
+      }
+
+      localStorage.setItem("furnitureDesigns", JSON.stringify(designs))
+      toast({
+        title: "Design saved",
+        description: `"${designName}" has been saved successfully.`,
+      })
+    } catch (error) {
+      console.error("Error saving design:", error)
+      toast({
+        title: "Error saving design",
+        description: "There was a problem saving your design. Please try again.",
+        variant: "destructive",
+      })
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-lg">Loading design...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className="flex h-screen flex-col">
-      <header className="border-b bg-background">
+      <header className="border-b bg-background/80 backdrop-blur-sm">
         <div className="flex h-14 items-center px-4 lg:px-6">
           <Button variant="ghost" size="icon" asChild className="mr-2">
             <Link href="/dashboard">
@@ -464,8 +591,13 @@ export default function DesignEditor() {
             />
           </div>
           <div className="ml-auto flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={handleSaveDesign}>
-              <Save className="mr-2 h-4 w-4" />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleSaveDesign}
+              className="border-blue-500/20 hover:border-blue-500/50 hover:bg-blue-50"
+            >
+              <Save className="mr-2 h-4 w-4 text-blue-500" />
               Save
             </Button>
           </div>
@@ -473,10 +605,10 @@ export default function DesignEditor() {
       </header>
       <div className="flex flex-1 overflow-hidden">
         {/* Left sidebar - Tools */}
-        <div className="w-64 border-r bg-muted/40 p-4 overflow-auto">
+        <div className="w-64 border-r bg-white/80 backdrop-blur-sm p-4 overflow-auto">
           <div className="space-y-6">
             <div>
-              <h3 className="mb-2 text-sm font-medium">Room Settings</h3>
+              <h3 className="mb-2 text-sm font-medium text-blue-600">Room Settings</h3>
               <div className="space-y-3">
                 <div className="grid gap-2">
                   <Label htmlFor="room-width">Width (m)</Label>
@@ -487,6 +619,7 @@ export default function DesignEditor() {
                     step={0.1}
                     value={[roomSize[0]]}
                     onValueChange={(value) => setRoomSize([value[0], roomSize[1], roomSize[2]])}
+                    className="[&>span]:bg-blue-500"
                   />
                   <div className="text-xs text-muted-foreground">{roomSize[0].toFixed(1)}m</div>
                 </div>
@@ -499,6 +632,7 @@ export default function DesignEditor() {
                     step={0.1}
                     value={[roomSize[1]]}
                     onValueChange={(value) => setRoomSize([roomSize[0], value[0], roomSize[2]])}
+                    className="[&>span]:bg-blue-500"
                   />
                   <div className="text-xs text-muted-foreground">{roomSize[1].toFixed(1)}m</div>
                 </div>
@@ -511,6 +645,7 @@ export default function DesignEditor() {
                     step={0.1}
                     value={[roomSize[2]]}
                     onValueChange={(value) => setRoomSize([roomSize[0], roomSize[1], value[0]])}
+                    className="[&>span]:bg-blue-500"
                   />
                   <div className="text-xs text-muted-foreground">{roomSize[2].toFixed(1)}m</div>
                 </div>
@@ -518,7 +653,10 @@ export default function DesignEditor() {
                   <Label>Wall Color</Label>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="outline" className="w-full justify-start text-left font-normal">
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start text-left font-normal border-blue-500/20"
+                      >
                         <div className="mr-2 h-4 w-4 rounded-full" style={{ backgroundColor: wallColor }} />
                         {wallColor}
                       </Button>
@@ -532,7 +670,10 @@ export default function DesignEditor() {
                   <Label>Floor Color</Label>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="outline" className="w-full justify-start text-left font-normal">
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start text-left font-normal border-blue-500/20"
+                      >
                         <div className="mr-2 h-4 w-4 rounded-full" style={{ backgroundColor: floorColor }} />
                         {floorColor}
                       </Button>
@@ -553,22 +694,31 @@ export default function DesignEditor() {
                       step={0.1}
                       value={[lightIntensity]}
                       onValueChange={(value) => setLightIntensity(value[0])}
+                      className="[&>span]:bg-blue-500"
                     />
-                    <Sun className="h-5 w-5" />
+                    <Sun className="h-5 w-5 text-yellow-500" />
                   </div>
                 </div>
               </div>
             </div>
 
-            <Separator />
+            <Separator className="bg-blue-100" />
 
             <div>
-              <h3 className="mb-2 text-sm font-medium">Add Furniture</h3>
+              <h3 className="mb-2 text-sm font-medium text-purple-600">Add Furniture</h3>
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="outline" onClick={() => handleAddFurniture("chair")}>
+                <Button
+                  variant="outline"
+                  onClick={() => handleAddFurniture("chair")}
+                  className="border-purple-500/20 hover:border-purple-500/50 hover:bg-purple-50"
+                >
                   Chair
                 </Button>
-                <Button variant="outline" onClick={() => handleAddFurniture("table")}>
+                <Button
+                  variant="outline"
+                  onClick={() => handleAddFurniture("table")}
+                  className="border-purple-500/20 hover:border-purple-500/50 hover:bg-purple-50"
+                >
                   Table
                 </Button>
               </div>
@@ -576,10 +726,10 @@ export default function DesignEditor() {
 
             {selectedFurniture && (
               <>
-                <Separator />
+                <Separator className="bg-pink-100" />
 
                 <div>
-                  <h3 className="mb-2 text-sm font-medium">Edit Furniture</h3>
+                  <h3 className="mb-2 text-sm font-medium text-pink-600">Edit Furniture</h3>
                   {(() => {
                     const selected = furniture.find((f) => f.id === selectedFurniture)
                     if (!selected) return null
@@ -605,6 +755,7 @@ export default function DesignEditor() {
                               newPosition[0] = value[0]
                               handleUpdateFurniture(selected.id, { position: newPosition })
                             }}
+                            className="[&>span]:bg-pink-500"
                           />
                           <div className="text-xs text-muted-foreground">{selected.position[0].toFixed(1)}m</div>
                         </div>
@@ -621,6 +772,7 @@ export default function DesignEditor() {
                               newPosition[2] = value[0]
                               handleUpdateFurniture(selected.id, { position: newPosition })
                             }}
+                            className="[&>span]:bg-pink-500"
                           />
                           <div className="text-xs text-muted-foreground">{selected.position[2].toFixed(1)}m</div>
                         </div>
@@ -629,7 +781,10 @@ export default function DesignEditor() {
                           <Label>Color</Label>
                           <Popover>
                             <PopoverTrigger asChild>
-                              <Button variant="outline" className="w-full justify-start text-left font-normal">
+                              <Button
+                                variant="outline"
+                                className="w-full justify-start text-left font-normal border-pink-500/20"
+                              >
                                 <div
                                   className="mr-2 h-4 w-4 rounded-full"
                                   style={{ backgroundColor: selected.color }}
@@ -658,6 +813,7 @@ export default function DesignEditor() {
                               newRotation[1] = value[0] * (Math.PI / 180)
                               handleUpdateFurniture(selected.id, { rotation: newRotation })
                             }}
+                            className="[&>span]:bg-pink-500"
                           />
                         </div>
 
@@ -675,6 +831,7 @@ export default function DesignEditor() {
                                   newSize[0] = value[0]
                                   handleUpdateFurniture(selected.id, { size: newSize })
                                 }}
+                                className="[&>span]:bg-pink-500"
                               />
                               <div className="text-xs text-muted-foreground">{selected.size[0].toFixed(1)}m</div>
                             </div>
@@ -691,13 +848,19 @@ export default function DesignEditor() {
                                   newSize[2] = value[0]
                                   handleUpdateFurniture(selected.id, { size: newSize })
                                 }}
+                                className="[&>span]:bg-pink-500"
                               />
                               <div className="text-xs text-muted-foreground">{selected.size[2].toFixed(1)}m</div>
                             </div>
                           </>
                         )}
 
-                        <Button variant="destructive" size="sm" onClick={() => handleDeleteFurniture(selected.id)}>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDeleteFurniture(selected.id)}
+                          className="bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600"
+                        >
                           Delete
                         </Button>
                       </div>
@@ -713,7 +876,7 @@ export default function DesignEditor() {
         <div className="flex-1 overflow-hidden relative">
           <div className="absolute top-4 left-4 z-10">
             <Tabs value={view} onValueChange={setView} className="w-[200px]">
-              <TabsList className="grid w-full grid-cols-2">
+              <TabsList className="grid w-full grid-cols-2 bg-white/80 backdrop-blur-sm">
                 <TabsTrigger value="2d">2D</TabsTrigger>
                 <TabsTrigger value="3d">3D</TabsTrigger>
               </TabsList>
@@ -721,17 +884,17 @@ export default function DesignEditor() {
           </div>
 
           <div className="absolute bottom-4 right-4 z-10 flex gap-2">
-            <Button variant="outline" size="icon">
-              <ZoomIn className="h-4 w-4" />
+            <Button variant="outline" size="icon" className="bg-white/80 backdrop-blur-sm border-blue-500/20">
+              <ZoomIn className="h-4 w-4 text-blue-500" />
             </Button>
-            <Button variant="outline" size="icon">
-              <ZoomOut className="h-4 w-4" />
+            <Button variant="outline" size="icon" className="bg-white/80 backdrop-blur-sm border-blue-500/20">
+              <ZoomOut className="h-4 w-4 text-blue-500" />
             </Button>
-            <Button variant="outline" size="icon">
-              <Move className="h-4 w-4" />
+            <Button variant="outline" size="icon" className="bg-white/80 backdrop-blur-sm border-blue-500/20">
+              <Move className="h-4 w-4 text-blue-500" />
             </Button>
-            <Button variant="outline" size="icon">
-              <RotateCcw className="h-4 w-4" />
+            <Button variant="outline" size="icon" className="bg-white/80 backdrop-blur-sm border-blue-500/20">
+              <RotateCcw className="h-4 w-4 text-blue-500" />
             </Button>
           </div>
 
@@ -791,6 +954,7 @@ export default function DesignEditor() {
           )}
         </div>
       </div>
+      <Toaster />
     </div>
   )
 }
